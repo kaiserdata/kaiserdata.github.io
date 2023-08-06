@@ -2,13 +2,27 @@
 <html>
   <header>
 
-<script type="module">
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 650px;
+}
+</style>
 
-/* Chart code */
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am5.ready(function() {
+
 // Create root element
 // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-let root = am5.Root.new("chartdiv");
+var root = am5.Root.new("chartdiv");
 
 // Set themes
 // https://www.amcharts.com/docs/v5/concepts/themes/
@@ -18,10 +32,10 @@ root.setThemes([
 
 // Generate and set data
 // https://www.amcharts.com/docs/v5/charts/radar-chart/#Setting_data
-let cat = -1;
+var cat = -1;
 
 function generateData() {
-  let value = Math.round(Math.random() * 10);
+  var value = Math.round(Math.random() * 10);
   cat++;
   return {
     category: "cat" + cat,
@@ -31,7 +45,7 @@ function generateData() {
 
 function generateDatas(count) {
   cat = -1;
-  let data = [];
+  var data = [];
   for (var i = 0; i < count; ++i) {
     data.push(generateData());
   }
@@ -40,7 +54,7 @@ function generateDatas(count) {
 
 // Create chart
 // https://www.amcharts.com/docs/v5/charts/radar-chart/
-let chart = root.container.children.push(am5radar.RadarChart.new(root, {
+var chart = root.container.children.push(am5radar.RadarChart.new(root, {
   panX: false,
   panY: false,
   wheelX: "panX",
@@ -50,7 +64,7 @@ let chart = root.container.children.push(am5radar.RadarChart.new(root, {
 
 // Add cursor
 // https://www.amcharts.com/docs/v5/charts/radar-chart/#Cursor
-let cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
+var cursor = chart.set("cursor", am5radar.RadarCursor.new(root, {
   behavior: "zoomX"
 }));
 
@@ -58,7 +72,7 @@ cursor.lineY.set("visible", false);
 
 // Create axes and their renderers
 // https://www.amcharts.com/docs/v5/charts/radar-chart/#Adding_axes
-let xRenderer = am5radar.AxisRendererCircular.new(root, {
+var xRenderer = am5radar.AxisRendererCircular.new(root, {
   strokeOpacity: 0.1,
   minGridDistance: 50
 });
@@ -68,13 +82,13 @@ xRenderer.labels.template.setAll({
   maxPosition: 0.98
 });
 
-let xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
+var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
   renderer: xRenderer,
   extraMax: 0.1,
   tooltip: am5.Tooltip.new(root, {})
 }));
 
-let yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
+var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
   categoryField: "category",
   renderer: am5radar.AxisRendererRadial.new(root, { minGridDistance: 20 })
 }));
@@ -82,7 +96,7 @@ let yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
 // Create series
 // https://www.amcharts.com/docs/v5/charts/radar-chart/#Adding_series
 for (var i = 0; i < 5; i++) {
-  let series = chart.series.push(am5radar.RadarColumnSeries.new(root, {
+  var series = chart.series.push(am5radar.RadarColumnSeries.new(root, {
     stacked: true,
     name: "Series " + i,
     xAxis: xAxis,
@@ -106,17 +120,20 @@ for (var i = 0; i < 5; i++) {
 chart.set("scrollbarX", am5.Scrollbar.new(root, { orientation: "horizontal", exportable: false }));
 chart.set("scrollbarY", am5.Scrollbar.new(root, { orientation: "vertical", exportable: false }));
 
-let data = generateDatas(6);
+var data = generateDatas(6);
 yAxis.data.setAll(data);
 
 // Animate chart and series in
 // https://www.amcharts.com/docs/v5/concepts/animations/#Initial_animation
 chart.appear(1000, 100);
 
-
+}); // end am5.ready()
 </script>
+
+
 </header>
 <body>
+  <div id="chartdiv"></div>
 https://docs.google.com/spreadsheets/d/e/2PACX-1vRflLFVcvd4ljjl8rrRFeP_tG7lWAsQpvnu2nzFJrg5FZKoUmS9xloLgU9i0H8n8RSNuQLoV_K9KQls/pub?output=csv
 </body>
 </html>
